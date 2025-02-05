@@ -36,22 +36,5 @@ public class ReviewController {
         }
     }
 
-//    @GetMapping("/findReviewById/{id}")
-//    public ResponseEntity<?> findById(@PathVariable("id") Long id){
-//        try {
-//            Review review = reviewService.findById(id);
-//            return new ResponseEntity<>(new ApiResponse(true, review), HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
-//        }
-//    }
-//
-//    @DeleteMapping("/deleteReviewById/{id}")
-//    public ResponseEntity<?> deleteById(@PathVariable("id") Long id){
-//        try{
-//            return new ResponseEntity<>(new ApiResponse(true, reviewService.deleteById(id)), HttpStatus.OK);
-//        }catch (Exception e){
-//            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
-//        }
-//    }
+
 }

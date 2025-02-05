@@ -41,32 +41,30 @@ public class UserServiceImpl implements UserService{
         validateRegistration(request);
         validateUser(request);
 
-
         userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
             throw new IllegalArgumentException("Email already in use.");
         });
 
-        User user ;
-        switch (request.getRole()) {
-            case CLIENT:
-                user = new Client();
-                ((Client) user).setAddress(request.getAddress());
-                break;
-            case ARTISAN:
-                user = new Artisan();
-                ((Artisan) user).setCategory(request.getCategory());
-                ((Artisan) user).setAddress(request.getAddress());
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid role selected.");
-        }
+        User user = switch (request.getRole()) {
+            case CLIENT -> new Client();
+            case ARTISAN -> new Artisan();
+            default -> throw new IllegalArgumentException("Invalid role selected.");
+        };
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
+        user.setEmail(email);
         user.setPhoneNumber(request.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
+        user.setAddress(request.getAddress());
+        user.setLocation(request.getLocation());
+
+        if (user instanceof Artisan artisan) {
+            artisan.setCategory(request.getCategory());
+            artisan.setDescription(request.getDescription());
+        }
+
         userRepository.save(user);
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setMessage("User registered successfully");
@@ -78,6 +76,8 @@ public class UserServiceImpl implements UserService{
 
 
         return registerUserResponse;
+
+
     }
 
     private void validateUserEmail(String email) {

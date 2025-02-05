@@ -11,6 +11,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import static java.time.LocalDateTime.now;
+
 @Getter
 @Setter
 @Entity
@@ -43,11 +45,23 @@ public class User {
 
     private String address;
 
+    private String Location;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     private boolean isLoggedIn = false;
+
+    @PrePersist
+    private void setCreatedAt(){
+        this.createdAt = now();
+    }
+
+    @PreUpdate
+    private void setUpdatedAt(){
+        this.updatedAt = now();
+    }
 
 }
 
